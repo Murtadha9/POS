@@ -48,6 +48,25 @@ const Home = () => {
     setTableData(updatedTableData);
   };
 
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
+  const handleSort = (column) => {
+    let direction = "asc";
+    if (sortConfig.key === column && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    const sortedData = tableData.sort((a, b) => {
+      if (a[column] < b[column]) {
+        return direction === "asc" ? -1 : 1;
+      }
+      if (a[column] > b[column]) {
+        return direction === "asc" ? 1 : -1;
+      }
+      return 0;
+    });
+    setTableData(sortedData);
+    setSortConfig({ key: column, direction });
+  };
+
 
   
 
@@ -62,7 +81,7 @@ const Home = () => {
 
 
     <div className=''>
-        <DataTable data={tableData}  onRemoveRow={handleRemoveRow}  />
+       <DataTable data={tableData} onRemoveRow={handleRemoveRow} handleSort={handleSort} />
       </div>
 
 
